@@ -62,7 +62,41 @@
 
 <script>
 const db = firebase.firestore();
-db.collection('products').add({title:'', price:'',content:''})
+const storage = firebase.storage();
+
+/*document.getElementById('send').addEventListener('click', function() {
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const price = document.getElementById('price').value;
+
+db.collection('products').add({title,content,price})
+})*/
+
+$('#send').click(function(){
+    var file = document.querySelector('#image').files[0];
+    var storageRef = storage.ref();
+    var path = storageRef.child('image/' + file.name);
+    var uploadTask = path.put(file);
+
+
+  var save = { 
+    title : $('#title').val(),
+    price : $('#price').val(),
+    content : $('#content').val(),
+    date: new Date(),
+  }
+  db.collection('product').add(save).then((result)=>{
+    console.log(result)
+window.location.href = "/index.html"
+  }).catch((err) => {
+console.log(err)
+  })
+})
+// todo : figuring out how to display the date when it's posted on the screen
+
+
+
+
 </script>
   
 </body>
