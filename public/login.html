@@ -28,8 +28,7 @@
   </nav>
 </nav>
 
-<div class="container mt-3">
-  
+
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
@@ -50,32 +49,66 @@
   
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig) 
-  </script>
-  <script>
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-    db.collection('products').get().then((snapshot)=>{
-      snapshot.forEach((doc)=>{
-        console.log(doc)
-        // no thumbnnail
-        var template = `<div class="products">
-        <div class="thumbnail" style="background-image: url('${doc.data().image}')"></div>
-        <div class="flex-grow-1 p-4">
-          <h5 class="title">${doc.data().title}</h5>
-          <p class="content">${doc.data().content }</p>
-          <p class="price">${"$"+doc.data().price }</p>
-          <p class="date">${doc.data().date}</p>
-          <p class="float-end">♥</p>
-        </div>
-        </div>`;
-        $('.container').append(template)
-      })
+
+</script>
+
+<div class="container mt-3">
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="name" id="name-new">
+  </div>
+    <div class="mb-3">
+      <input type="email" class="form-control" placeholder="email" id="email-new">
+    </div>
+    <div class="mb-3">
+      <input type="password" class="form-control" placeholder="pw" id="pw-new">
+    </div>
+    <button type="submit" class="btn btn-primary" id="register">sign up</button>
+ </div>
+
+ <div class="container mt-3">
+    <div class="mb-3">
+      <div class="mb-3">
+        <input type="email" class="form-control" placeholder="email" id="email">
+      </div>
+      <input type="password" class="form-control" placeholder="pw" id="pw">
+    </div>
+    <button type="submit" class="btn btn-primary" id="login">Sign in</button>
+    <button type="submit" class="btn btn-primary" id="logout">Log out</button>
+ </div>
+<script>
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+$('#logout').click(function(){
+firebase.auth().signOut()
+})
+
+$('#login').click(function(){
+
+var email = $('#email').val();
+var password = $('#pw').val();
+
+firebase.auth().signInWithEmailAndPassword(email,password).then((result) =>{
+console.log(result.user)
+})
+})
+
+$('#register').click(function(){
+var email = $('#email-new').val();
+var password = $('#pw-new').val();
+var name = $('#name-new').val();
+
+  firebase.auth().createUserWithEmailAndPassword(email,password).then((result)=>{
+    console.log(result)
+    console.log(result.user)
+    result.user.updateProfile({displayName: name}).then(()=>{
+
     })
+  })
+})
+
+
+</script>
   
-  </script>
 </body>
 </html>
-
-
-
-
