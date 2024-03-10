@@ -94,8 +94,11 @@ $('#send').click(function() {
             price: $('#price').val(),
             content: $('#content').val(),
             date: new Date(),
-            image: url // Ensure that the key matches your document field
-          };
+            image: url ,
+            uid: JSON.parse(localStorage.getItem('user')).uid ,
+            name:JSON.parse(localStorage.getItem('user')).displayName
+          }
+
 
           db.collection('products').add(save)
             .then((result) => {

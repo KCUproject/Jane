@@ -29,6 +29,12 @@
 </nav>
 
 <div class="container mt-3">
+    <input type="text" class="form-control mt-2" id="title" placeholder="title" >
+    <textarea class="form-control mt-2" id="content">content</textarea>
+    <input type="text" class="form-control mt-2" id="price" placeholder="price">
+    <button class="btn btn-danger mt-3" id="send">upload</button>
+  </div>
+
   
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
@@ -50,32 +56,21 @@
   
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig) 
-  </script>
-  <script>
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-    db.collection('products').get().then((snapshot)=>{
-      snapshot.forEach((doc)=>{
-        console.log(doc)
-        // no thumbnnail
-        var template = `<div class="products">
-        <div class="thumbnail" style="background-image: url('${doc.data().image}')"></div>
-        <div class="flex-grow-1 p-4">
-          <h5 class="title"><a href="/detail.html?id=${doc.id}"> ${doc.data().title} </a></h5>
-          <p class="content">${doc.data().content }</p>
-          <p class="price">${"$"+doc.data().price }</p>
-          <p class="date">${doc.data().date}</p>
-          <p class="float-end">♥</p>
-        </div>
-        </div>`;
-        $('.container').append(template)
-      })
-    })
-  
-  </script>
-</body>
-</html>
+
+</script>
+
+<script>
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+var queryString = new URLSearchParams(window.location.search);
+var productId = queryString.get('id');
 
 
-
-
+db.collection('products').doc(productId).get().then((result) => {
+    console.log(result.data())
+    $('#title').val(result.data().title);
+    $('#content').val(result.data().content);
+    $('#price').val(result.data().price);
+  });
+</script>

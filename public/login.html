@@ -13,6 +13,7 @@
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">marketplace</a>
+      <span class="ms-auto mx-2" id="userName">name</span>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -79,8 +80,22 @@
 const db = firebase.firestore();
 const storage = firebase.storage();
 
+var removed = localStorage.getItem('user')
+if (removed){
+$('#userName').html(JSON.parse(removed).displayName)
+}
+
+firebase.auth().onAuthStateChanged((user) =>{
+  if (user){
+    console.log(user.uid)
+    console.log(user.displayName)
+    localStorage.setItem('user',JSON.stringify(user))
+  }
+})
+
 $('#logout').click(function(){
 firebase.auth().signOut()
+localStorage.removeItem('user')
 })
 
 $('#login').click(function(){
@@ -90,6 +105,8 @@ var password = $('#pw').val();
 
 firebase.auth().signInWithEmailAndPassword(email,password).then((result) =>{
 console.log(result.user)
+}). catch(error => {
+  console.log(error.message);
 })
 })
 
@@ -99,16 +116,15 @@ var password = $('#pw-new').val();
 var name = $('#name-new').val();
 
   firebase.auth().createUserWithEmailAndPassword(email,password).then((result)=>{
-    console.log(result)
-    console.log(result.user)
+    console.log(result);
     result.user.updateProfile({displayName: name}).then(()=>{
-
-    })
-  })
-})
-
-
-</script>
+console.log("profile updated");
+        });
+      }).catch(error => {
+        console.log(error.message);
+      });
+    });
+  </script>
   
 </body>
 </html>
