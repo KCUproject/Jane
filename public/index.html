@@ -12,18 +12,20 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">marketplace</a>
+      <a class="navbar-brand" href="#">Badger Market</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="container mt-3" id="imageContainer">
         <div class="navbar-nav">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
-          <a class="nav-link" href="#">Features</a>
-          <a class="nav-link" href="#">Pricing</a>
+          <a class="nav-link" href="#">Cart</a>
+          <a class="nav-link" href="#">WishList</a>
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </div>
       </div>
+    </div>
     </div>
   </nav>
 </nav>
@@ -58,13 +60,15 @@
       snapshot.forEach((doc)=>{
         console.log(doc)
         // no thumbnnail
-        var template = `<div class="products">
+       var date = doc.data().date.toDate(); 
+      var formattedDate = date.toLocaleString(); 
+       var template = `<div class="products">
         <div class="thumbnail" style="background-image: url('${doc.data().image}')"></div>
         <div class="flex-grow-1 p-4">
           <h5 class="title"><a href="/detail.html?id=${doc.id}"> ${doc.data().title} </a></h5>
           <p class="content">${doc.data().content }</p>
           <p class="price">${"$"+doc.data().price }</p>
-          <p class="date">${doc.data().date}</p>
+          <p class="date">${formattedDate}</p>
           <p class="float-end">♥</p>
         </div>
         </div>`;

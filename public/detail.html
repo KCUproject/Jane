@@ -75,7 +75,7 @@ db.collection('products').doc(queryString.get('id')).get().then((result)=>
     $('.name-new').html(result.data().name)
     $('.title').html(result.data().title)
     $('.price').html(result.data().price)
-    $('.detail-pic').css('background-image','url(${result.data().image})')
+    $('.detail-pic').css('background-image', `url(${result.data().image})`);
 })
 
 $('#edit').click(function() {

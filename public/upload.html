@@ -79,6 +79,7 @@ $('#send').click(function() {
     var storageRef = storage.ref();
     var path = storageRef.child('image/' + file.name);
     var uploadTask = path.put(file);
+    
 
     uploadTask.on('state_changed',
       null,

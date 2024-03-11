@@ -72,5 +72,9 @@ db.collection('products').doc(productId).get().then((result) => {
     $('#title').val(result.data().title);
     $('#content').val(result.data().content);
     $('#price').val(result.data().price);
-  });
+  })
+
+db.collection('products').doc(queryString.get('id')).update({title:})
+
+
 </script>
