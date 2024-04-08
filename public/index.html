@@ -59,7 +59,6 @@
     db.collection('products').get().then((snapshot)=>{
       snapshot.forEach((doc)=>{
         console.log(doc)
-        // no thumbnnail
        var date = doc.data().date.toDate(); 
       var formattedDate = date.toLocaleString(); 
        var template = `<div class="products">

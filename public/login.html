@@ -82,7 +82,7 @@ const storage = firebase.storage();
 
 var removed = localStorage.getItem('user')
 if (removed){
-$('#userName').html(JSON.parse(removed).displayName)
+//$('#userName').html(JSON.parse(removed).displayName)
 }
 
 firebase.auth().onAuthStateChanged((user) =>{
@@ -116,6 +116,12 @@ var password = $('#pw-new').val();
 var name = $('#name-new').val();
 
   firebase.auth().createUserWithEmailAndPassword(email,password).then((result)=>{
+    var userInfo = {
+      name: name,
+      email: email
+    }
+db.collection('user').doc(result.user.uid).set(userInfo)
+
     console.log(result);
     result.user.updateProfile({displayName: name}).then(()=>{
 console.log("profile updated");
