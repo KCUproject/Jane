@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container p-4 detail">
+        <div class="row">
+          <div class="col-3 p-0">
+            <ul class="list-group chat-list">
+              <li class="list-group-item">
+                <h6>chatroom</h6>
+                <h6 class="text-small">chatroom id</h6>
+              </li>
+            </ul>
+          </div>
+          <div class="col-9 p-0">
+            <div class="chat-room">
+              <ul class="list-group chat-content">
+                <li><span class="chat-box">chat1 content</span></li>
+                <li><span class="chat-box">chat1 content</span></li>
+                <li><span class="chat-box mine">chat1 content</span></li>
+              </ul>
+              <div class="input-group">
+                <input class="form-control" id="chat-input">
+                <button class="btn btn-secondary" id="send">send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+     </div> 
+      
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script>
+   
+    var firebaseConfig = {
+      apiKey: "AIzaSyAmmPww_VVkzfWwcwXMhp3QbZ6nmYnyuf8",
+      authDomain: "marketplace-84155.firebaseapp.com",
+      projectId: "marketplace-84155",
+      storageBucket: "marketplace-84155.appspot.com",
+      messagingSenderId: "967788168855",
+      appId: "1:967788168855:web:4f7dc3eb7b7251364b0bd2",
+      measurementId: "G-SGQ1Y1PLPF"
+    };
+  
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig) 
+
+</script>
+
+     <script>
+        
+const db = firebase.firestore();
+const storage = firebase.storage();
+var myuid = JSON.parse(localStorage.getItem('user')).uid
+
+
+
+db.collection('chatroom').where('participants', 'array-contains', myuid).get().then((result)=>{
+  result.forEach((a)=>{
+    var template = `<li class="list-group-item">
+            <h6>${a.data().product}</h6>
+            <h6 class="text-small">${a.id}</h6>
+          </li>`
+    $('.chat-list').append(template)
+  })
+})
+     </script>
+    
+</body>
+</html>

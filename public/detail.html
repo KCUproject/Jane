@@ -39,6 +39,8 @@
       <p class="date">date</p>
       <p class="price">price</p>
     </div>
+    <button class="btn btn-outline-secondary" id="edit">edit</button>
+    <button class="btn btn-outline-secondary" id="chat">message</button>
 </div>
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
@@ -67,15 +69,33 @@
 const db = firebase.firestore();
 const storage = firebase.storage();
 
+var myuid = JSON.parse(localStorage.getItem('user')).uid
+
+$('#chat').click(function() {
+  var data = {
+    participants : [myuid,sellerUid],
+    from: myuid,
+    to : sellerUid,
+    product : title,
+    date: new Date()
+  }
+  db.collection('chatroom').add(data)
+})
+
+var sellerUid; 
+var title;
 var queryString = new URLSearchParams(window.location.search);
 
 db.collection('products').doc(queryString.get('id')).get().then((result)=>
 {
+  sellerUid = result.data().uid;
+  title = result.data().title;
+
     console.log(result.data())
     $('.name-new').html(result.data().name)
     $('.title').html(result.data().title)
     $('.price').html(result.data().price)
-    $('.detail-pic').css('background-image', `url(${result.data().image})`);
+    $('.detail-pic').css('background-image', `url(${result.data().image})`)
 })
 
 $('#edit').click(function() {
